@@ -1,0 +1,48 @@
+.left-float{
+    float: left;
+}
+.right-float{
+    float:right;
+}
+:host::ng-deep .p-datatable .p-datatable-tbody > tr > td {
+    text-align: left;
+    border: 1px solid #e9ecef;
+    border-width: 0 0 1px 0;
+    padding: 0.5rem 0.5em;
+}
+:host::ng-deep .p-datatable .p-datatable-thead > tr > th {
+    text-align: left;
+    padding: 0.5rem 0.5rem;
+    border: 1px solid #e9ecef;
+    border-width: 0 0 1px 0;
+    font-weight: 600;
+    color: #495057;
+    background: #f8f9fa;
+    transition: box-shadow 0.2s;
+}
+:host::ng-deep .p-inputtext {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    font-size: 1rem;
+    color: #495057;
+    background: #ffffff;
+    padding: 0.3rem 0.3rem;
+    border: 1px solid #ced4da;
+    transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border-radius: 3px;
+}
+:host ::ng-deep .p-toolbar {
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 3px;
+    padding: 0.5rem 0.5rem;
+}
+:host ::ng-deep .p-button {
+    color: #ffffff;
+    padding: 0.2rem 0.5rem;;
+    font-size: 1rem;
+    transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+    border-radius: 3px;
+}
