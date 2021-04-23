@@ -39,7 +39,7 @@
     border-radius: 3px;
     padding: 0.5rem 0.5rem;
 }
-:host ::ng-deep .p-button {
+/* :host ::ng-deep .p-button */ .header-button{
     color: #ffffff;
     padding: 0.2rem 0.5rem;;
     font-size: 1rem;

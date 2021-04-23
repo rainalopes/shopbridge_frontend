@@ -3,8 +3,8 @@
 <div class="card">
     <p-toolbar styleClass="p-mb-1">
         <ng-template pTemplate="left">
-            <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success p-mr-2" (click)="openNew()"></button> &nbsp;&nbsp;
-            <button pButton pRipple label="Delete" icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedProducts()" [disabled]="!selectedProducts || !selectedProducts.length"></button>
+            <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success p-mr-2 header-button" (click)="openNew()"></button> &nbsp;&nbsp;
+            <button pButton pRipple label="Delete" icon="pi pi-trash" class="p-button-danger header-button" (click)="deleteSelectedProducts()" [disabled]="!selectedProducts || !selectedProducts.length"></button>
         </ng-template>
     </p-toolbar>
 
