@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ProductService } from './../product-service.service';
 import { ConfirmationService } from 'primeng/api';
 import { MessageService } from 'primeng/api';
+import * as Excel from "exceljs";
+import * as fs from 'file-saver';
 @Component({
   selector: 'app-product-management',
   templateUrl: './product-management.component.html',
@@ -9,22 +11,106 @@ import { MessageService } from 'primeng/api';
 })
 export class ProductManagementComponent implements OnInit {
 
-  productDialog: boolean;
-
-  products: any[];
-
-  product: any;
-
-  selectedProducts: any[];
-
-  submitted: boolean;
-
+productDialog: boolean;
+products: any[];
+product: any;
+selectedProducts: any[];
+submitted: boolean;
+title: string;
+header:any;
+exceldata:any[];
+    dropdownlist: any;
   constructor(private productService: ProductService, private messageService: MessageService, private confirmationService: ConfirmationService) { }
-
+  
   ngOnInit() {
-      this.productService.getProducts().then(data => this.products = data);
+      this.productService.getProducts().then(data => {
+          this.products = data;
+          this.title = 'Sales Report';
+          this.header = ["Name", "Price", "Category"]
+          this.exceldata = this.products.map((element)=>{
+              return [element.name,element.price,element.category];
+          });
+    });
+    this.productService.getCategories().then(
+        data=>{
+            this.dropdownlist = [];
+            this.dropdownlist = data.map((item)=>{
+                return item.category;
+            });
+        }
+    );
   }
 
+  generateExcel(){
+    let workbook = new Excel.Workbook();
+    let worksheet = workbook.addWorksheet('Products Data');
+    let titleRow = worksheet.addRow([this.title]);
+    // Set font, size and style in title row.
+    titleRow.font = { name: 'Comic Sans MS', family: 4, size: 16, underline: 'double', bold: true };
+    // Blank Row
+    worksheet.addRow([]);
+    //Add Header Row
+    let headerRow = worksheet.addRow(this.header);
+
+    // Cell Style : Fill and Border
+    headerRow.eachCell((cell, number) => {
+    cell.fill = {
+        type: 'pattern',
+        pattern: 'solid',
+        fgColor: { argb: 'FFFFFF00' },
+        bgColor: { argb: 'FF0000FF' }
+    }
+    cell.border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } }
+    });
+    // Add Data and Conditional Formatting
+    console.log(this.exceldata);
+    this.exceldata.forEach(d => {
+        let row = worksheet.addRow(d);
+    }
+    
+    );
+    workbook.xlsx.writeBuffer().then((data) => {
+        let blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+        fs.saveAs(blob, 'Report.xlsx');
+  });
+
+  }
+  generateTemplate(){
+    let workbook = new Excel.Workbook();
+    let worksheet = workbook.addWorksheet('Products Data');
+    let titleRow = worksheet.addRow([this.title]);
+    // Set font, size and style in title row.
+    titleRow.font = { name: 'Comic Sans MS', family: 4, size: 16, underline: 'double', bold: true };
+    // Blank Row
+    worksheet.addRow([]);
+    //Add Header Row
+    let headerRow = worksheet.addRow(this.header);
+
+    // Cell Style : Fill and Border
+    headerRow.eachCell((cell, number) => {
+    cell.fill = {
+        type: 'pattern',
+        pattern: 'solid',
+        fgColor: { argb: 'FFFFFF00' },
+        bgColor: { argb: 'FF0000FF' }
+    }
+    cell.border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } }
+    });
+    // Add Data and Conditional Formatting
+    let joineddropdownlist = "\""+this.dropdownlist.join(',')+"\"";
+    console.log(joineddropdownlist);
+    for(let i=4;i<100;i++){
+        worksheet.getCell('C'+i).dataValidation = {
+            type: 'list',
+            allowBlank: true,
+            formulae: [joineddropdownlist]//'"One,Two,Three,Four"'
+          };
+    }
+    workbook.xlsx.writeBuffer().then((data) => {
+        let blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+        fs.saveAs(blob, 'Template.xlsx');
+  });
+  }
   openNew() {
       this.product = {};
       this.submitted = false;

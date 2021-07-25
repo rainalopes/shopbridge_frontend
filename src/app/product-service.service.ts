@@ -13,4 +13,11 @@ export class ProductService {
     .then(res => res.data)
     .then(data => { return data; });
 }
+
+getCategories(){
+  return this.http.get<any>('assets/category.json')
+  .toPromise()
+  .then(res => res.data)
+  .then(data => { return data; });
+}
 }
